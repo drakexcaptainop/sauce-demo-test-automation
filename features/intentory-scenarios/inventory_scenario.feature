@@ -1,10 +1,21 @@
-Feature: As a BDD fanatic
-         I want to start writing my tests
-         so I learn more about automation
 
+Feature: Inventory Actions
 
-# --- ESCENARIOS SAUCE DEMO ---
- 
+  Scenario Outline: Login and add specific items to the shopping cart
+    Given I am on the login page
+    And I input username "standard_user" and password "secret_sauce"
+    And I click the login button
+
+    When I click "Add to cart" for the product "<product_name>"
+
+    Then the shopping cart badge should show "<count>"
+    And the button for "<product_name>" should change to "Remove"
+
+    Examples:
+      | product_name            | count |
+      | Sauce Labs Backpack     | 1     |
+      | Sauce Labs Bike Light   | 1     |
+      | Sauce Labs Bolt T-Shirt | 1     |
 
  Scenario: Add an item to the cart
    Given I am logged in to Sauce Demo as "standard_user"
