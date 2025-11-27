@@ -1,0 +1,59 @@
+Given('I browse to Sauce Demo main page') do
+  visit('https://www.saucedemo.com/')
+end
+
+Given('I am logged in to Sauce Demo as {string}') do |username|
+  visit('https://www.saucedemo.com/')
+  fill_in('user-name', with: username)
+  fill_in('password', with: 'secret_sauce')
+  click_button('login-button')
+end
+
+When('I enter {string} as username') do |username|
+  fill_in('user-name', with: username)
+
+end
+
+When('I type {string} as password') do |password|
+  fill_in('password', with: password)
+  click_button('login-button')
+end
+
+Then('I see the Sauce Demo page displayed') do
+  expect(page).to have_content('Products')
+  expect(page).to have_css('.inventory_list')
+end
+
+
+When('I add {string} to the cart') do |productName|
+  product_div = find('.inventory_item', text: productName)
+  product_div.click_button('Add to cart')
+end
+
+Then('the cart badge shows {string}') do |count|
+  expect(page).to have_css('.shopping_cart_badge', text: count)
+end
+
+
+When('I go to the shopping cart') do
+  find('.shopping_cart_link').click
+end
+
+When('I proceed to checkout') do
+  click_button('checkout')
+end
+
+When('I fill the checkout info with {string}, {string}, {string}') do |first, last, zip|
+  fill_in('first-name', with: first)
+  fill_in('last-name', with: last)
+  fill_in('postal-code', with: zip)
+  click_button('continue')
+end
+
+When('I finish the order') do
+  click_button('finish')
+end
+
+Then('I see the order success message {string}') do |successMessage|
+  expect(page).to have_css('.complete-header', text: successMessage)
+end
