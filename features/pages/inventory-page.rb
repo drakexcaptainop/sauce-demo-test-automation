@@ -25,6 +25,19 @@ class InventoryPage
     end
   end
 
+  def click_logout
+    find('#logout_sidebar_link').click
+  end
+
+  def click_sidebar_button(button_text)
+    case button_text
+      when 'Reset App State'
+        self.click_reset_app_state
+      when 'Logout'
+        self.click_logout
+      end
+  end
+
   def check_button_state(product_name, expected_text)
     slug = product_name.downcase.gsub(' ', '-')
     

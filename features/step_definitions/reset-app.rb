@@ -25,9 +25,12 @@ Then('the buttons for {string} should say {string}') do |products_string, expect
   end
 end
 
-When('I open the left sidebar menu and click {string}') do |string|
-  @inventory_page.open_left_sidebar_menu
-  @inventory_page.click_reset_app_state
+When('I open the left sidebar menu and click {string}') do |button_text|
+    if(@inventory_page.nil?)
+        @inventory_page = InventoryPage.new
+    end
+    @inventory_page.open_left_sidebar_menu
+    @inventory_page.click_sidebar_button(button_text)
 end
 
 Then('the shopping cart icon should display no count') do

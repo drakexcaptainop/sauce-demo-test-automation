@@ -41,6 +41,7 @@ Then('I should see the inventory page with the following products:') do |table|
   scenario_items.each do |item|
     expect( inventory_items.any? { |inventory_item| inventory_item == item } ).to be(true)
   end
+
 end
 
 
@@ -51,6 +52,7 @@ Then('all product images on the page should be identical') do
 end
 
 
-Then('I should see the {string} item page') do |string|
-  sleep 10
+Then('I should see the login page') do
+  visit('')
+  expect(current_url).to include('saucedemo.com')
 end
