@@ -5,10 +5,16 @@ class InventoryPage
 
   def add_product_to_cart(product_name)
     slug = product_name.downcase.gsub(' ', '-')
-    
     button_id = "#add-to-cart-#{slug}"
-    
     find(button_id).click
+  end
+
+  def click_reset_app_state
+    find("#reset_sidebar_link").click
+  end
+
+  def open_left_sidebar_menu
+    find('.bm-burger-button').click
   end
 
   def get_cart_count
@@ -28,6 +34,6 @@ class InventoryPage
       button_id = "#add-to-cart-#{slug}"
     end
 
-    has_selector?(button_id, text: expected_text)
+    return find(button_id).text == expected_text
   end
 end
