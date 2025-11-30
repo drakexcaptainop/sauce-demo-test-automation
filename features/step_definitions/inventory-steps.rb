@@ -57,3 +57,11 @@ end
 Then('I see the order success message {string}') do |successMessage|
   expect(page).to have_css('.complete-header', text: successMessage)
 end
+
+Then('I see an error message {string}') do |errorMessage|
+  expect(page).to have_css('.error-message-container.error', text: errorMessage)
+end
+
+Then('I should still be on the checkout overview page') do
+  expect(page).to have_current_path(/checkout-step-two\.html/)
+end
