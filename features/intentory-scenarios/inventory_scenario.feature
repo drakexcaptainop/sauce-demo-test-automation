@@ -53,3 +53,17 @@ Examples:
 | visual_user             | 6              |
 | problem_user            | 3              |
 | error_user              | 3              |
+
+Scenario Outline: Remove all items depending on user type
+  Given I am logged in to Sauce Demo as "<user>"
+  When I add all items to the cart
+  And I remove all items from the cart
+  Then <expected_result>
+
+Examples:
+| user                    | expected_result                 |
+| standard_user           | the cart badge is not visible   |
+| performance_glitch_user | the cart badge is not visible   |
+| visual_user             | the cart badge is not visible   |
+| problem_user            | the cart badge stays at "3"     |
+| error_user              | the cart badge stays at "3"     |

@@ -37,6 +37,21 @@ When('I add all items to the cart') do
   end
 end
 
+When('I remove all items from the cart') do
+  all("button.btn_inventory").each do |btn|
+    btn.click if btn.text == "Remove"
+  end
+end
+
+
+
+Then('the cart badge is not visible') do
+  expect(page).not_to have_css('.shopping_cart_badge')
+end
+
+Then('the cart badge stays at {string}') do |count|
+  expect(page).to have_css('.shopping_cart_badge', text: count)
+end
 
 Then('the cart badge shows {string}') do |count|
   expect(page).to have_css('.shopping_cart_badge', text: count)
@@ -61,10 +76,6 @@ end
 When('I finish the order') do
   click_button('finish')
 end
-
-
-
-
 
 
 Then('I see the order success message {string}') do |successMessage|
