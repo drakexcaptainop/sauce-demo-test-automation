@@ -30,6 +30,14 @@ When('I add {string} to the cart') do |productName|
   product_div.click_button('Add to cart')
 end
 
+
+When('I add all items to the cart') do
+  all("button.btn_inventory").each do |btn|
+    btn.click
+  end
+end
+
+
 Then('the cart badge shows {string}') do |count|
   expect(page).to have_css('.shopping_cart_badge', text: count)
 end
@@ -54,6 +62,11 @@ When('I finish the order') do
   click_button('finish')
 end
 
+
+
+
+
+
 Then('I see the order success message {string}') do |successMessage|
   expect(page).to have_css('.complete-header', text: successMessage)
 end
@@ -65,3 +78,4 @@ end
 Then('I should still be on the checkout overview page') do
   expect(page).to have_current_path(/checkout-step-two\.html/)
 end
+ 

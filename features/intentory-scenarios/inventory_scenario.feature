@@ -16,8 +16,7 @@ Examples:
 | user                    | item                  | first_name | last_name | postal_code | message                    |
 | standard_user           | Sauce Labs Bike Light | Juan       | Perez     | 12345       | Thank you for your order!  |
 | performance_glitch_user | Sauce Labs Bike Light | Juan       | Perez     | 12345       | Thank you for your order!  |
-| visual_user             | Sauce Labs Bike Light | Juan       | Perez     | 12345       | Thank you for your order!  |
-
+| visual_user             | Sauce Labs Bike Light | Juan       | Perez     | 12345       | Thank you for your order!  | 
 
 
 Scenario Outline: Error in Completing a purchase
@@ -42,3 +41,15 @@ Scenario: Finish button does not work for error_user
   And I finish the order
   Then I should still be on the checkout overview page
 
+Scenario Outline: Add items to the cart depending on user type
+  Given I am logged in to Sauce Demo as "<user>"
+  When I add all items to the cart
+  Then the cart badge shows "<expected_count>"
+
+Examples:
+| user                    | expected_count |
+| standard_user           | 6              |
+| performance_glitch_user | 6              |
+| visual_user             | 6              |
+| problem_user            | 3              |
+| error_user              | 3              |
