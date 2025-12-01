@@ -1,3 +1,19 @@
+#jorge
+When('I click "Add to cart" for the product {string}') do |product_name|
+  @inventory_page = InventoryPage.new
+  @inventory_page.add_product_to_cart(product_name)
+end
+
+Then('the shopping cart badge should show {string}') do |count|
+  expect(@inventory_page.get_cart_count).to eq(count)
+end
+
+Then('the button for {string} should change to {string}') do |product_name, expected_text|
+  result = @inventory_page.check_button_state(product_name, expected_text)
+  expect(result).to be true
+end
+
+#natha
 Given('I browse to Sauce Demo main page') do
   visit('https://www.saucedemo.com/')
 end

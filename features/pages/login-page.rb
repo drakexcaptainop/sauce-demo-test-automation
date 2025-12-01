@@ -22,6 +22,21 @@ class LoginPage
     find(LOGIN_BTN).click
   end
 
+  def get_inventory_items
+    return all('.inventory_item_name').map(&:text)
+  end
+
+  def get_inventory_images
+    return all('.inventory_item img').map{|img| img[:src]}
+  end
+
+  def get_inventory_item_name
+    if( current_url.match?(/inventory-item\.html\?id=\d+/) )
+      return find('.inventory_details_name.large_size').text
+    end
+    return nil
+  end
+
   def check_login_status(expectation)
     if expectation == 'inventory'
       return page.current_url.include?(INVENTORY_URL)
