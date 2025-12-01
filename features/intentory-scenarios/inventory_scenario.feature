@@ -67,3 +67,4 @@ Examples:
 | visual_user             | the cart badge is not visible   |
 | problem_user            | the cart badge stays at "3"     |
 | error_user              | the cart badge stays at "3"     |
+
