@@ -66,12 +66,6 @@ When('I proceed to checkout') do
   click_button('checkout')
 end
 
-When('I fill the checkout info with {string}, {string}, {string}') do |first, last, zip|
-  fill_in('first-name', with: first)
-  fill_in('last-name', with: last)
-  fill_in('postal-code', with: zip)
-  click_button('continue')
-end
 
 When('I finish the order') do
   click_button('finish')
@@ -86,9 +80,7 @@ Then('I see an error message {string}') do |errorMessage|
   expect(page).to have_css('.error-message-container.error', text: errorMessage)
 end
 
-Then('I should still be on the checkout overview page') do
-  expect(page).to have_current_path(/checkout-step-two\.html/)
-end
+
 
 When('I click the top left Three bar button') do
   find('#react-burger-menu-btn').click
@@ -96,6 +88,10 @@ end
 
 When('I click the Logout sidebar button') do
   find('#logout_sidebar_link').click
+end
+
+When('I click the shopping cart icon') do
+  find('.shopping_cart_link').click
 end
 
 Then('I should see the following products and prices on the inventory page:') do |table|
@@ -124,5 +120,60 @@ end
 Then('all products should display the dog image') do
   all('img.inventory_item_img').each do |img|
     expect(img[:src]).to include('/static/media/sl-404.168b1cce10384b857a6f.jpg')
+  end
+end
+
+
+
+
+
+## extras
+
+When('I fill the checkout info with {string}, {string}, {string}') do |first_name, last_name, zip_code|
+  find('#first-name').set(first_name)
+  find('#last-name').set(last_name)
+  find('#postal-code').set(zip_code)
+end
+
+Then('I should still be on the checkout overview page') do
+  expect(current_url).to include('checkout-step-two.html')
+  expect(page).to have_content('Checkout: Overview')
+end
+
+Then('the "Item total" field should show {string}') do |expected_val|
+  price_elements = all('.inventory_item_price')
+  
+  @calculated_sum = price_elements.map { |el| el.text.delete('$').to_f }.sum
+  
+  expect(@calculated_sum).to eq(expected_val.to_f)
+
+  expect(find('.summary_subtotal_label').text).to include(expected_val)
+end
+
+Then('the "Tax" field should show {string}') do |expected_tax|
+  calculated_tax = (@calculated_sum * 0.08).round(2)
+  
+  expect(calculated_tax).to eq(expected_tax.to_f)
+
+  expect(find('.summary_tax_label').text).to include(expected_tax)
+end
+
+Then('the "Total" field should show {string}') do |expected_total|
+  calculated_total = (@calculated_sum + (@calculated_sum * 0.08).round(2)).round(2)
+  
+  expect(calculated_total).to eq(expected_total.to_f)
+
+  expect(find('.summary_total_label').text).to include(expected_total)
+end
+
+
+When('I add the following products to the cart: {string}') do |product_list|
+  products = product_list.split(',')
+
+  products.each do |product_name|
+    clean_name = product_name.strip
+    item_container = find('.inventory_item', text: clean_name)
+    
+    item_container.click_button('Add to cart')
   end
 end
