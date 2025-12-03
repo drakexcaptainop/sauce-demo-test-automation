@@ -54,7 +54,9 @@ Then('the cart badge stays at {string}') do |count|
 end
 
 Then('the cart badge shows {string}') do |count|
-  expect(page).to have_css('.shopping_cart_badge', text: count)
+  #use find to get badge element
+  badge = find('.shopping_cart_badge')
+  expect(badge).to have_text(count)
 end
 
 
