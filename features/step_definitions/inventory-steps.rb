@@ -129,7 +129,7 @@ Given('I am in the Products page') do
   expect(page).to have_css('span.title', text: 'Products')
 end
 
-Then('the Your Cart page should display the products "<products>"') do |products|
+Then('the Your Cart page should display the products {string}') do |products|
   inventory_items = all('.inventory_item_name').map(&:text)
   products = products.split(",")
   products.each do |product|

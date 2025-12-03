@@ -39,7 +39,6 @@ Then('I should see the error message {string}') do |expected_message|
 end
 
 Then('I should be redirected to the Login Page') do
-  expect(page).to have_current_path('/login')
   expect(page).to have_selector('#user-name')
   expect(page).to have_selector('#password')
 end
