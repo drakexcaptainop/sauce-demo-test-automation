@@ -124,9 +124,22 @@ Then('all products should display the dog image') do
 end
 
 
+Given('I am in the Products page') do 
+  expect(all('.inventory_item').count).to be > 0
+  expect(page).to have_css('span.title', text: 'Products')
+end
 
+Then('the Your Cart page should display the products "<products>"') do |products|
+  inventory_items = all('.inventory_item_name').map(&:text)
+  products = products.split(",")
+  products.each do |product|
+    expect(inventory_items).to include(product)
+  end
+end
 
-
+Then('the cart icon in the top right corner shows the number {string}') do |expected_count|
+  expect(find('.shopping_cart_badge')).to have_text(expected_count)
+end
 ## extras
 
 When('I fill the checkout info with {string}, {string}, {string}') do |first_name, last_name, zip_code|
@@ -167,13 +180,13 @@ Then('the "Total" field should show {string}') do |expected_total|
 end
 
 
+
+
 When('I add the following products to the cart: {string}') do |product_list|
   products = product_list.split(',')
-
   products.each do |product_name|
     clean_name = product_name.strip
     item_container = find('.inventory_item', text: clean_name)
-    
-    item_container.click_button('Add to cart')
+    item_container.find('button', text: 'Add to cart').click
   end
 end

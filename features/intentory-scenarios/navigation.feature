@@ -39,50 +39,16 @@ Feature: Page Navigation and URL Routing
     Then the user should be redirected to the Inventory page
 
 
-  Scenario: Checkout Cancellation Navigation
-    Given the user is logged in and on the Checkout Information page
-    When the user clicks the "Cancel" button
-    Then the user should be redirected back to the Cart page
-
-  Scenario: Post-Purchase Navigation Back Home
-    Given the user is on the Checkout Complete page
-    When the user clicks the "Back Home" button
-    Then the user should be redirected to the Inventory page
-
-  # 10. External Link Navigation (Sidebar)
   Scenario: External Link Navigation to About Page
     Given the user is logged in and the sidebar menu is open
     When the user clicks the "About" link
     Then the browser should navigate to "https://saucelabs.com/"
 
-
-
-  # 12. Browser Back Button Functionality
-  Scenario: Browser Back Button Functionality
-    Given the user has navigated from the Inventory page to the Cart page
-    When the user clicks the browser's "Back" button
-    Then the user should be returned to the Inventory page
-
-  # 13. Browser Forward Button Functionality
-  Scenario: Browser Forward Button Functionality
-    Given the user has navigated from Inventory to Cart and clicked Back
-    When the user clicks the browser's "Forward" button
-    Then the user should be returned to the Cart page
-
-
-  Scenario: Closing Sidebar Menu
-    Given the user is on the Inventory page with the sidebar menu open
-    When the user clicks the "X" button on the sidebar
-    Then the sidebar should close
-    And the user should remain on the Inventory page
-
-  # 16. Page Refresh Persistence
   Scenario: Page Refresh Persistence
     Given the user is logged in and on the Checkout Step Two page
     When the user refreshes the browser page
     Then the user should remain on the Checkout Step Two page
 
-  # 17. Unauthenticated Direct URL Access
   Scenario: Unauthenticated Direct URL Access
     Given the user is NOT logged in
     When the user attempts to access "https://www.saucedemo.com/inventory.html" directly

@@ -23,6 +23,7 @@ When('I click the Checkout button') do
   find('#checkout').click
 end
 
+
 When('I click the Checkout button on the top right corner of the page') do
   find('#checkout').click
 end

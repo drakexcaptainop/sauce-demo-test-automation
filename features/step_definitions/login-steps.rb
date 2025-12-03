@@ -37,3 +37,15 @@ end
 Then('I should see the error message {string}') do |expected_message|
   expect(@login_page.get_error_message).to include(expected_message)
 end
+
+Then('I should be redirected to the Login Page') do
+  expect(page).to have_current_path('/login')
+  expect(page).to have_selector('#user-name')
+  expect(page).to have_selector('#password')
+end
+
+When('I log in again as {string}') do |username|
+  @login_page = LoginPage.new
+  @login_page.fill_credentials(username, 'secret_sauce')
+  @login_page.submit
+end

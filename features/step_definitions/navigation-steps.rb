@@ -317,6 +317,3 @@ Then('an error message {string} should be displayed') do |msg|
   expect(page).to have_content(msg)
 end
 
-Then('I should be redirected to the Login Page') do
-  expect(page).to have_current_path('https://www.saucedemo.com/')
-end

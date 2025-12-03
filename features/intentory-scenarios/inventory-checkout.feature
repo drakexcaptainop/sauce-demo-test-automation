@@ -2,6 +2,7 @@ Feature: Inventory Checkout
 @checkout
   Scenario Outline: Standard User Checkout Calculation
     Given I am logged in to Sauce Demo as "<user>"
+    And I am in the Products page
     When I add the following products to the cart: "<products>"
     And I click the shopping cart icon
     And I click the Checkout button
@@ -24,6 +25,7 @@ Feature: Inventory Checkout
   @problem-checkout
   Scenario: Problem User fails to proceed past Checkout Information
     Given I am logged in to Sauce Demo as "problem_user"
+    And I am in the Products page
     And I add the following products to the cart: "Sauce Labs Backpack"
     And I click the shopping cart icon
     And I click the Checkout button
@@ -36,6 +38,7 @@ Feature: Inventory Checkout
 @visual-checkout
   Scenario Outline: Standard User Checkout Calculation
     Given I am logged in to Sauce Demo as "visual_user"
+    And I am in the Products page
     When I add the following products to the cart: "<products>"
     And I click the shopping cart icon
     And I click the Checkout button on the top right corner of the page
@@ -56,6 +59,7 @@ Feature: Inventory Checkout
 @error_checkout
   Scenario: Error User fails to complete the checkout
     Given I am logged in to Sauce Demo as "error_user"
+    And I am in the Products page
     And I add the following products to the cart: "Sauce Labs Backpack,Sauce Labs Bike Light,Sauce Labs Onesie"
     And I click the shopping cart icon
     And I click the Checkout button

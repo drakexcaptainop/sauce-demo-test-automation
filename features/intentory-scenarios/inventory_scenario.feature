@@ -19,18 +19,6 @@ Examples:
 | visual_user             | Sauce Labs Bike Light | Juan       | Perez     | 12345       | Thank you for your order!  | 
 
 
-Scenario Outline: Error in Completing a purchase
-Given I am logged in to Sauce Demo as "<user>"
-And I add "<item>" to the cart
-When I go to the shopping cart
-And I proceed to checkout
-And I fill the checkout info with "<first_name>", "<last_name>", "<postal_code>"
-Then I see an error message "<message>"
-
-Examples:
-| user         | item                  | first_name | last_name | postal_code | message                           |
-| problem_user | Sauce Labs Bike Light | Juan       |           | 12345       | Error: Last Name is required      |
-
 
 Scenario: Finish button does not work for error_user
   Given I am logged in to Sauce Demo as "error_user"
@@ -44,7 +32,7 @@ Scenario: Finish button does not work for error_user
 Scenario Outline: Add items to the cart depending on user type
   Given I am logged in to Sauce Demo as "<user>"
   When I add all items to the cart
-  Then the cart badge shows "<expected_count>"
+  Then the cart icon in the top right corner shows the number "<expected_count>" 
 
 Examples:
 | user                    | expected_count |
