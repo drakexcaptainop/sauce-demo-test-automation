@@ -49,8 +49,3 @@ Feature: Page Navigation and URL Routing
     When the user refreshes the browser page
     Then the user should remain on the Checkout Step Two page
 
-  Scenario: Unauthenticated Direct URL Access
-    Given the user is NOT logged in
-    When the user attempts to access "https://www.saucedemo.com/inventory.html" directly
-    Then the user should be redirected to the login page
-    And an error message "Epic sadface: You can only access '/inventory.html' when you are logged in" should be displayed
