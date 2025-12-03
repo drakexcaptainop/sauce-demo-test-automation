@@ -98,8 +98,31 @@ When('I click the Logout sidebar button') do
   find('#logout_sidebar_link').click
 end
 
+Then('I should see the following products and prices on the inventory page:') do |table|
+  expected_items = table.raw
+  
+  product_names = all('.inventory_item_name').map(&:text)
+  product_prices = all('.inventory_item_price').map(&:text)
+  
+  actual_items = product_names.zip(product_prices)
+  
+  expect(actual_items).to match_array(expected_items)
+end
+
 Then('I should see the following products on the inventory page:') do |table|
   expected_products = table.raw.flatten
   actual_products = all('.inventory_item_name').map(&:text)
   expect(actual_products).to match_array(expected_products)
+end
+
+Then('the product {string} should display the dog image') do |product_name|
+  product = find('.inventory_item', text: product_name)
+  img_src = product.find('img.inventory_item_img')[:src]
+  expect(img_src).to include('/static/media/sl-404.168b1cce10384b857a6f.jpg')
+end
+
+Then('all products should display the dog image') do
+  all('img.inventory_item_img').each do |img|
+    expect(img[:src]).to include('/static/media/sl-404.168b1cce10384b857a6f.jpg')
+  end
 end
