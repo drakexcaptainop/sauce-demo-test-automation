@@ -31,4 +31,8 @@ class LoginPage
       return page.current_url.include?(INVENTORY_ITEM_URL)
     end
   end
+
+  def get_error_message
+    find(ERROR_BOX).text
+  end
 end

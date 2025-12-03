@@ -1,9 +1,7 @@
 
-
 Given('I am on the login page') do
   @login_page = LoginPage.new 
   @login_page.visit_page
-
 end
 
 When('I input username {string} and password {string}') do |user, pass|
@@ -18,4 +16,24 @@ end
 Then('I should be redirected to {string}') do |expected_result|
   result = @login_page.check_login_status(expected_result)
   expect(result).to be true
+end
+
+Given('I am logged in as {string}') do |username|
+  @login_page = LoginPage.new
+  @login_page.visit_page
+  @login_page.fill_credentials(username, 'secret_sauce')
+  @login_page.submit
+end
+
+Then('the Login button should be visible') do
+  expect(page).to have_selector('#login-button')
+end
+
+Then('the Username and Password fields should be empty') do
+  expect(find('#user-name').value).to be_empty
+  expect(find('#password').value).to be_empty
+end
+
+Then('I should see the error message {string}') do |expected_message|
+  expect(@login_page.get_error_message).to include(expected_message)
 end

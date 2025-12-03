@@ -89,4 +89,17 @@ end
 Then('I should still be on the checkout overview page') do
   expect(page).to have_current_path(/checkout-step-two\.html/)
 end
- 
+
+When('I click the top left Three bar button') do
+  find('#react-burger-menu-btn').click
+end
+
+When('I click the Logout sidebar button') do
+  find('#logout_sidebar_link').click
+end
+
+Then('I should see the following products on the inventory page:') do |table|
+  expected_products = table.raw.flatten
+  actual_products = all('.inventory_item_name').map(&:text)
+  expect(actual_products).to match_array(expected_products)
+end

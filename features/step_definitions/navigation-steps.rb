@@ -1,11 +1,8 @@
-# Navigation Steps
 
-# Background
 Given('the user opens the browser and navigates to {string}') do |url|
   visit(url)
 end
 
-# 1. Successful Login Navigation
 Given('the user is on the login page') do
   visit('https://www.saucedemo.com/')
 end
@@ -318,4 +315,8 @@ end
 
 Then('an error message {string} should be displayed') do |msg|
   expect(page).to have_content(msg)
+end
+
+Then('I should be redirected to the Login Page') do
+  expect(page).to have_current_path('https://www.saucedemo.com/')
 end
