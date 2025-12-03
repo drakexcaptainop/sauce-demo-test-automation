@@ -12,8 +12,9 @@ Scenario: User does login in sauce demo using Standard User
       | Sauce Labs Fleece Jacket          | $49.99 |
       | Sauce Labs Onesie                 | $7.99  |
       | Test.allTheThings() T-Shirt (Red) | $15.99 |
+
 @problem
-  Scenario: Problem User Login
+  Scenario: User does login with the problem_user account
     When I input username "problem_user" and password "secret_sauce"
     And I click the login button
     Then I should see the following products and prices on the inventory page:
