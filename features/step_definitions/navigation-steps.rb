@@ -317,3 +317,43 @@ Then('an error message {string} should be displayed') do |msg|
   expect(page).to have_content(msg)
 end
 
+# 1. Navigation Step
+Given('the user navigates to the {string} page') do |page_name|
+  # Map the Gherkin string to the specific SauceDemo URL
+  path = case page_name
+         when 'Inventory'
+           '/inventory.html'
+         when 'Cart'
+           '/cart.html'
+         when 'Checkout Step One'
+           '/checkout-step-one.html'
+         when 'Checkout Step Two'
+           '/checkout-step-two.html'
+         else
+           raise "Error: mapping for '#{page_name}' not defined in step definition."
+         end
+
+  # Visit the mapped URL
+  visit path
+end
+
+# 2. Validation Step
+Then('the user should remain on the {string} page') do |page_name|
+  # We reuse the logic to know what URL part we expect
+  expected_part = case page_name
+                  when 'Inventory'         then 'inventory.html'
+                  when 'Cart'              then 'cart.html'
+                  when 'Checkout Step One' then 'checkout-step-one.html'
+                  when 'Checkout Step Two' then 'checkout-step-two.html'
+                  else
+                    raise "Error: mapping for '#{page_name}' not defined."
+                  end
+
+  # Verify the browser URL contains the expected part
+  expect(current_url).to include(expected_part)
+  
+  # Optional: Extra robustness by checking the page title text
+  # This confirms not just the URL, but that the page actually loaded the content
+  # header_text = find('.title').text
+  # expect(header_text).to eq(page_name.upcase) # SauceDemo titles are usually uppercase
+end

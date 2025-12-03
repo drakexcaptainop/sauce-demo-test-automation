@@ -66,3 +66,12 @@ Then('I should see the error: Epic sadface: You can only access \/{string} when 
   error_container = find('[data-test="error"]')
   expect(error_container.text).to eq("Epic sadface: You can only access '/#{url_extension}' when you are logged in.")
 end
+
+Given('the user Navigates to the Login Page of Sauce Demo') do
+  visit '/'
+end
+Given('the user logs in as {string}') do |username|
+  @login_page = LoginPage.new
+  @login_page.fill_credentials(username, 'secret_sauce')
+  @login_page.submit
+end
