@@ -144,11 +144,13 @@ Then('the cart icon in the top right corner shows the number {string}') do |expe
 end
 ## extras
 
+
 When('I fill the checkout info with {string}, {string}, {string}') do |first_name, last_name, zip_code|
-  find('#first-name').set(first_name)
-  find('#last-name').set(last_name)
-  find('#postal-code').set(zip_code)
+  find('#first-name').set(first_name + last_name + zip_code)
+  find('[data-test="lastName"]').set(last_name)
+  find("#postal-code").set(zip_code)
 end
+
 
 Then('I should still be on the checkout overview page') do
   expect(current_url).to include('checkout-step-two.html')
@@ -191,4 +193,15 @@ When('I add the following products to the cart: {string}') do |product_list|
     item_container = find('.inventory_item', text: clean_name)
     item_container.find('button', text: 'Add to cart').click
   end
+end
+
+
+
+Given('I have added the following products to the cart: {string}') do |products_string|
+    products = products_string.split(",")
+    products.each do |product|
+        clean_name = product.strip
+        item_container = find('.inventory_item', text: clean_name)
+        item_container.find('button', text: 'Add to cart').click
+    end
 end

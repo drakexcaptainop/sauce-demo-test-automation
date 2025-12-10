@@ -1,6 +1,5 @@
 When('I click Continue') do
   find('#continue').click
-  sleep 10
 end
 
 Then('I should see the {string} page') do |string|

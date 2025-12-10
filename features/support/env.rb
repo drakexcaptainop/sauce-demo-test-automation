@@ -4,6 +4,8 @@ require 'capybara/dsl'
 require 'capybara/cucumber'
 require 'capybara-screenshot/cucumber'
 
+require 'selenium-webdriver'
+
 #PTravel Settings
 ENV['USER']="Pepazo"
 ENV['PSW']="ILoveQA"
@@ -22,10 +24,26 @@ class CapybaraDriverRegistrar
   # register a Selenium driver for the given browser to run on the localhost
   def self.register_selenium_driver(browser)
     Capybara.register_driver :selenium do |app|
-      Capybara::Selenium::Driver.new(app, :browser => browser)
+      
+      options = nil
+      
+      if browser == :chrome
+        # 2. Use '::Selenium' to force Ruby to look at the top-level module
+        options = ::Selenium::WebDriver::Chrome::Options.new
+        
+        # Silence the logs
+        options.add_argument('--log-level=3')
+        options.add_argument('--silent')
+        
+        # Stability fix
+        options.add_argument('--disable-gpu')
+      end
+
+      # Pass the options to the driver
+      Capybara::Selenium::Driver.new(app, browser: browser, options: options)
+      
     end
   end
-
 end
 # Register various Selenium drivers
 #CapybaraDriverRegistrar.register_selenium_driver(:internet_explorer)
@@ -34,3 +52,4 @@ CapybaraDriverRegistrar.register_selenium_driver(:chrome)
 Capybara.run_server = false
 #World(Capybara)
 
+Capybara::Screenshot.autosave_on_failure = false
