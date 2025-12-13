@@ -9,6 +9,7 @@ require 'selenium-webdriver'
 #PTravel Settings
 ENV['USER']="Pepazo"
 ENV['PSW']="ILoveQA"
+ENV['tax_percentage'] = 0.08
 
 Capybara.default_driver = :selenium
 

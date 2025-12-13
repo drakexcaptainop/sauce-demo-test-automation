@@ -2,8 +2,31 @@ When('I click Continue') do
   find('#continue').click
 end
 
-Then('I should see the {string} page') do |string|
-  expect(page).to have_content(string)
+Then('I should see the {string} page') do |page_title|
+  expect(page).to have_content(page_title)
+  case page_title
+  when 'Checkout: Your Information'
+    expect(page).to have_content('Checkout: Your Information')
+    form_elements = ['first-name', 'last-name', 'postal-code']
+    form_elements.each do |element|
+      expect(page).to have_field(element)
+    end
+    expect(page).to have_button('Continue')
+    expect(page).to have_button('Cancel')
+
+  when 'Checkout: Overview'
+    expect(page).to have_content('Checkout: Overview')
+    expect(page).to have_button('Finish')
+    expect(page).to have_button('Cancel')
+    expect(page).to have_selector('.cart_item')
+    expect(page).to have_selector('.summary_info')
+    expect(page).to have_selector('.summary_total_label')
+    expect(page).to have_selector('.summary_tax_label')
+    expect(page).to have_selector('.summary_subtotal_label')
+  when 'Checkout: Complete!'
+    expect(page).to have_content('Checkout: Complete!')
+    expect(page).to have_button('Back Home')
+  end
 end
 
 Then('I should see the error message {string} at the bottom of the form') do |error_msg|
