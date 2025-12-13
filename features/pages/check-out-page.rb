@@ -9,7 +9,7 @@ class CheckoutPage
 
   def get_page_totals
     calculated_sum  = self.get_item_total_from_page
-    calculated_tax = (calculated_sum * ENV['tax_percentage']).round(2)
+    calculated_tax = (calculated_sum * ENV['tax_percentage'].to_f).round(2)
     calculated_total = (calculated_sum + calculated_tax).round(2)
     return [calculated_sum, calculated_tax, calculated_total]
   end

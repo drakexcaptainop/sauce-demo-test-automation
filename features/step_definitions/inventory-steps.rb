@@ -19,10 +19,7 @@ When('I type {string} as password') do |password|
   click_button('login-button')
 end
 
-Then('I see the Sauce Demo page displayed') do
-  expect(page).to have_content('Products')
-  expect(page).to have_css('.inventory_list')
-end
+
 
 
 When('I add {string} to the cart') do |productName|

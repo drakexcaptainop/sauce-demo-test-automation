@@ -27,9 +27,7 @@ Then('the URL should contain {string}') do |path|
   expect(current_url).to include(path)
 end
 
-Then('the product grid should be visible') do
-  expect(page).to have_css('.inventory_list')
-end
+
 
 # 2. Failed Login Navigation Guard
 When('the user enters an invalid username or password') do
@@ -39,6 +37,10 @@ end
 
 Then('the user should remain on the login page') do
   expect(page).to have_selector('#login-button')
+  expect(current_url).to include('/login.html')
+  expect(page).to have_selector('form')
+  expect(page).to have_selector('#user-name')
+  expect(page).to have_selector('#password')
 end
 
 Then('the URL should remain {string}') do |url|
@@ -93,14 +95,6 @@ Then('the sidebar navigation panel should slide into view') do
   expect(page).to have_css('.bm-menu-wrap', visible: true)
 end
 
-Then('the URL should not change') do
-  # This step assumes the URL was checked before or is known
-  # For simplicity, we might just check it hasn't navigated away from current page context
-  # But strictly, we'd need to capture it before.
-  # Given the context, we can just ensure we are still on the expected page if known,
-  # or just pass if no navigation happened.
-  # For this specific step, we can check we are still on inventory if that was the context.
-end
 
 Then('the menu options {string}, {string}, {string}, {string} should be visible') do |opt1, opt2, opt3, opt4|
   expect(page).to have_content(opt1)
@@ -206,6 +200,10 @@ end
 
 Then('the login form should be displayed') do
   expect(page).to have_selector('#login-button')
+  expect(current_url).to include('/login.html')
+  expect(page).to have_selector('form')
+  expect(page).to have_selector('#user-name')
+  expect(page).to have_selector('#password')
 end
 
 # 12. Browser Back Button Functionality
@@ -281,7 +279,7 @@ end
 
 # 16. Page Refresh Persistence
 Given('the user is logged in and on the Checkout Step Two page') do
-  visit('https://www.saucedemo.com/')
+  visit('/')
   fill_in('user-name', with: 'standard_user')
   fill_in('password', with: 'secret_sauce')
   click_button('Login')

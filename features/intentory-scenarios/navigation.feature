@@ -25,7 +25,6 @@ Feature: Page Navigation and URL Routing
   Scenario: Sidebar Menu Expansion
     When the user clicks the "Burger Menu" icon
     Then the sidebar navigation panel should slide into view
-    And the URL should not change
     And the menu options "All Items", "About", "Logout", "Reset App State" should be visible
 
   Scenario: External Link Navigation to About Page
