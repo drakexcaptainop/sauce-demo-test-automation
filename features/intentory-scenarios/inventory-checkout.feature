@@ -28,7 +28,7 @@ Scenario Outline: Standard User Checkout Calculation
     Examples:
     | user                    |
     | standard_user           |
-    | performance_glitch_user |
+    | performance_glitch_user           |
 
 
   @problem-checkout

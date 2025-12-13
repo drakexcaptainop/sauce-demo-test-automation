@@ -45,22 +45,38 @@ end
 Then('I should see the following payment calculations:') do |table|
   rows_hash = table.rows_hash
   cop = CheckoutPage.new
-  
-  [item_total, tax, total] = cop.get_page_totals
+  item_total, tax, total = cop.get_page_totals
+
   scenario_item_total = rows_hash['Item total'].to_f
   scenario_tax_total = rows_hash['Tax'].to_f
   scenario_total = rows_hash['Total'].to_f
+
+  page_item_total = find('.summary_subtotal_label').text.delete('Item total: $').to_f
+  page_tax_total = find('.summary_tax_label').text.delete('Tax: $').to_f
+  page_total = find('.summary_total_label').text.delete('Total: $').to_f
+
+  
+  puts 'SCENARIO TOTALS'
+  puts(scenario_item_total, scenario_tax_total, scenario_total)
+
+  puts 'CALULATED TOTALS'
+  puts(  item_total, tax, total)
+
+  puts 'PAGE TOTALS'
+  puts(page_item_total, page_tax_total, page_total)
+
 
   expect(item_total).to eq(scenario_item_total)
   expect(tax).to eq(scenario_tax_total)
   expect(total).to eq(scenario_total)
 
-  page_item_total = find('.summary_subtotal_label').text.delete('$').to_f
-  page_tax_total = find('.summary_tax_label').text.delete('$').to_f
-  page_total = find('.summary_total_label').text.delete('$').to_f
+  
 
   expect(page_item_total).to eq(item_total)
   expect(page_tax_total).to eq(tax)
   expect(page_total).to eq(total)
+
+
+  
 
 end
