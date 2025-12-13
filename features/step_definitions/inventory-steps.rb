@@ -231,3 +231,9 @@ end
 When('I click on the name of the product {string}') do |product_name|
   find('.inventory_item_name', text: product_name).click
 end
+
+
+Then('I should be on the product details page') do
+  expect(all('.inventory_item_container').count).to eq(1)
+  expect(current_url).to include('inventory-item.html')
+end

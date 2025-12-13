@@ -43,14 +43,20 @@ Feature: Page Navigation and URL Routing
 
 
 
-
+Scenario: Navigation from Inventory to Product Detail and Back
+    When the user clicks on the title of the first product
+    Then the user should be taken to the product detail page
+    And the URL should contain "/inventory-item.html"
+    When the user clicks the "Back to products" button
+    Then the user should be redirected back to the Inventory page
 
 
 
   @fixed-navi
   Scenario Outline: Navigate to product details
     When I click on the name of the product "<product_name>"
-    Then I should see the product title "<product_name>"
+    Then I should be on the product details page
+    And I should see the product title "<product_name>"
     And I should see the product description "<description>"
     And I should see the "Add to cart" button
 
