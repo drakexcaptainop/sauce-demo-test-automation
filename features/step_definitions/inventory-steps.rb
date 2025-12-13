@@ -145,12 +145,16 @@ end
 ## extras
 
 
-When('I fill the checkout info with {string}, {string}, {string}') do |first_name, last_name, zip_code|
-  find('#first-name').set(first_name + last_name + zip_code)
+When('I fill the checkout info with First Name: {string}, Last Name: {string}, Zip Code: {string}') do |first_name, last_name, zip_code|
+  find('#first-name').set(first_name)
   find('[data-test="lastName"]').set(last_name)
   find("#postal-code").set(zip_code)
 end
 
+
+Given('the user is in the Inventory page') do
+  visit('/inventory.html')
+end
 
 Then('I should still be on the checkout overview page') do
   expect(current_url).to include('checkout-step-two.html')
@@ -204,4 +208,23 @@ Given('I have added the following products to the cart: {string}') do |products_
         item_container = find('.inventory_item', text: clean_name)
         item_container.find('button', text: 'Add to cart').click
     end
+end
+
+
+Then('I should see the product title {string}') do |product_name|
+  page_product_name = find('[data-test="inventory-item-name"]').text
+  expect(page_product_name).to eq(product_name)
+end
+
+Then('I should see the product description {string}') do |description|
+  page_description = find('[data-test="inventory-item-desc"]').text
+  expect(page_description).to eq(description)
+end
+
+Then('I should see the "Add to cart" button') do
+  expect(page).to have_button('Add to cart')
+end
+
+When('I click on the name of the product {string}') do |product_name|
+  find('.inventory_item_name', text: product_name).click
 end

@@ -8,7 +8,7 @@ Scenario Outline: Standard User Checkout Calculation
 
     When I click the shopping cart icon
     And I click the Checkout button
-    And I fill the checkout info with "Test", "User", "12345"
+    And I fill the checkout info with First Name: "Test", Last Name: "User", Zip Code: "12345"
     And I click Continue
 
     Then I should see the "Checkout: Overview" page
