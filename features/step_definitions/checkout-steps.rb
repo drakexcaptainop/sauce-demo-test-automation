@@ -32,3 +32,35 @@ end
 Then('the Last Name field should be empty') do
   expect(find('#last-name').text).to eq('')
 end
+
+Given('I have added the following products to the cart:') do |table|
+  table.hashes.each do |product|
+    formatted_btn_name = product['Product Name'].downcase.tr(' ', '-')
+    button_name = "#add-to-cart-#{formatted_btn_name}"
+    find(button_name).click
+  end
+end
+
+
+Then('I should see the following payment calculations:') do |table|
+  rows_hash = table.rows_hash
+  cop = CheckoutPage.new
+  
+  [item_total, tax, total] = cop.get_page_totals
+  scenario_item_total = rows_hash['Item total'].to_f
+  scenario_tax_total = rows_hash['Tax'].to_f
+  scenario_total = rows_hash['Total'].to_f
+
+  expect(item_total).to eq(scenario_item_total)
+  expect(tax).to eq(scenario_tax_total)
+  expect(total).to eq(scenario_total)
+
+  page_item_total = find('.summary_subtotal_label').text.delete('$').to_f
+  page_tax_total = find('.summary_tax_label').text.delete('$').to_f
+  page_total = find('.summary_total_label').text.delete('$').to_f
+
+  expect(page_item_total).to eq(item_total)
+  expect(page_tax_total).to eq(tax)
+  expect(page_total).to eq(total)
+
+end

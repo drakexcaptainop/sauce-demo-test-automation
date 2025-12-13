@@ -145,7 +145,10 @@ end
 ## extras
 
 
-When('I fill the checkout info with First Name: {string}, Last Name: {string}, Zip Code: {string}') do |first_name, last_name, zip_code|
+When('I fill the checkout info with:') do |form_data_table|
+  first_name = form_data_table.rows_hash['First Name']
+  last_name = form_data_table.rows_hash['Last Name']
+  zip_code = form_data_table.rows_hash['Zip Code']
   find('#first-name').set(first_name)
   find('[data-test="lastName"]').set(last_name)
   find("#postal-code").set(zip_code)
