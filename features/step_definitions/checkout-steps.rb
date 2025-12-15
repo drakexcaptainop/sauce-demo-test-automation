@@ -102,5 +102,5 @@ Then('I should see the following payment calculations:') do |table|
 end
 
 Then('the empty Last Name field should not give me an error') do 
-  expect(1) to eq(1)
+  expect(1).to eq(1)
 end
