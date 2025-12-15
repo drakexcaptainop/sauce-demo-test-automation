@@ -1,6 +1,4 @@
-Given('I browse to Sauce Demo main page') do
-  visit('https://www.saucedemo.com/')
-end
+
 
 Given('I am logged in to Sauce Demo as {string}') do |username|
   visit('https://www.saucedemo.com/')
@@ -9,15 +7,9 @@ Given('I am logged in to Sauce Demo as {string}') do |username|
   click_button('login-button')
 end
 
-When('I enter {string} as username') do |username|
-  fill_in('user-name', with: username)
 
-end
 
-When('I type {string} as password') do |password|
-  fill_in('password', with: password)
-  click_button('login-button')
-end
+
 
 
 
@@ -50,11 +42,7 @@ Then('the cart badge stays at {string}') do |count|
   expect(page).to have_css('.shopping_cart_badge', text: count)
 end
 
-Then('the cart badge shows {string}') do |count|
-  #use find to get badge element
-  badge = find('.shopping_cart_badge')
-  expect(badge).to have_text(count)
-end
+
 
 
 When('I go to the shopping cart') do
@@ -75,9 +63,7 @@ Then('I see the order success message {string}') do |successMessage|
   expect(page).to have_css('.complete-header', text: successMessage)
 end
 
-Then('I see an error message {string}') do |errorMessage|
-  expect(page).to have_css('.error-message-container.error', text: errorMessage)
-end
+
 
 
 
@@ -128,13 +114,7 @@ Given('I am in the Products page') do
   expect(page).to have_css('span.title', text: 'Products')
 end
 
-Then('the Your Cart page should display the products {string}') do |products|
-  inventory_items = all('.inventory_item_name').map(&:text)
-  products = products.split(",")
-  products.each do |product|
-    expect(inventory_items).to include(product)
-  end
-end
+
 
 Then('the cart icon in the top right corner shows the number {string}') do |expected_count|
   expect(find('.shopping_cart_badge')).to have_text(expected_count)
@@ -201,14 +181,7 @@ end
 
 
 
-Given('I have added the following products to the cart: {string}') do |products_string|
-    products = products_string.split(",")
-    products.each do |product|
-        clean_name = product.strip
-        item_container = find('.inventory_item', text: clean_name)
-        item_container.find('button', text: 'Add to cart').click
-    end
-end
+
 
 
 Then('I should see the product title {string}') do |product_name|

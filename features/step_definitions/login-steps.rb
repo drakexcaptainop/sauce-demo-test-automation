@@ -13,10 +13,7 @@ When('I click the login button') do
 end
 
 
-Then('I should be redirected to {string}') do |expected_result|
-  result = @login_page.check_login_status(expected_result)
-  expect(result).to be true
-end
+
 
 Given('I am logged in as {string}') do |username|
   @login_page = LoginPage.new
