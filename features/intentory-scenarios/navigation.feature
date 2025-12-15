@@ -8,19 +8,6 @@ Feature: Page Navigation and URL Routing
     And the user logs in as "standard_user"
     And the user is in the Inventory page
 
-  Scenario: Navigation from Inventory to Product Detail and Back
-    When the user clicks on the title of the first product
-    Then the user should be taken to the product detail page
-    And the URL should contain "/inventory-item.html"
-    When the user clicks the "Back to products" button
-    Then the user should be redirected back to the Inventory page
-
-  Scenario: Navigation from Inventory to Cart and Back
-    When the user clicks the shopping cart icon
-    Then the user should be taken to the Cart page
-    And the URL should contain "/cart.html"
-    When the user clicks the "Continue Shopping" button
-    Then the user should be redirected back to the Inventory page
 
   Scenario: Sidebar Menu Expansion
     When the user clicks the "Burger Menu" icon
@@ -38,11 +25,7 @@ Feature: Page Navigation and URL Routing
     Then the user should remain on the "Checkout Step Two" page
 
 
-
-
-
-
-Scenario: Navigation from Inventory to Product Detail and Back
+  Scenario: Navigation from Inventory to Product Detail and Back
     When the user clicks on the title of the first product
     Then the user should be taken to the product detail page
     And the URL should contain "/inventory-item.html"
