@@ -66,7 +66,7 @@ end
 
 
 Then('the browser should navigate to the Sauce Labs page') do
-  expect(current_url).to eq('https://www.saucelabs.com')
+  expect(current_url).to eq('https://saucelabs.com/')
 end
 
 
@@ -114,9 +114,27 @@ Then('the user should remain on the {string} page') do |page_name|
 end
 
 
-Given('I have opened the details for {string}') do |string|
-  expect(find('[data-test="inventory-item-name"]').text).to eq(string)
-  div = find('.inventory_details_desc_container') 
-  expect( div ).to have_selector(:button)
-  expect(find('[data-test="back-to-products"]').text).to eq('Back to products')
+Given('I have opened the details for {string}') do |product_name|
+  expect(current_url).to include('/inventory.html')
+  find('.inventory_item_name ', text: product_name).click
 end
+
+
+When('I click the "Back to products" button') do 
+  expect(current_url).to include('/inventory-item.html')
+  find('#back-to-products').click
+end
+
+Then('I should see the "Checkout" button') do 
+  expect(current_url).to include('/cart.html')
+  expect(page).to have_button(id: 'checkout')
+end
+
+Given('I am on the "Your Cart" page') do
+  visit('/cart.html')
+end
+
+When('I click the "Continue Shopping" button') do
+  find('#continue-shopping').click
+end
+

@@ -27,6 +27,14 @@ Then('I should see the {string} page') do |page_title|
     expect(find('.title').text).to eq('Checkout: Complete!')
     expect(page).to have_button('Back Home')
     expect(find('.complete-header').text).to eq('Thank you for your order!')
+  when 'Products'
+    expect(find('.title').text).to eq('Products')
+    expect(page).to have_selector('#inventory_container')
+    expect(all('.inventory_item').count).to be > 0
+  when 'Your Cart'
+    expect(find('.title').text).to eq('Your Cart')
+    expect(page).to have_button(id: 'checkout')
+    expect(page).to have_button(id: 'continue-shopping')
   end
 end
 
