@@ -3,12 +3,17 @@ require 'capybara'
 require 'capybara/dsl'
 require 'capybara/cucumber'
 require 'capybara-screenshot/cucumber'
-
+require 'mini_magick'
 require 'selenium-webdriver'
+require 'digest'
 
 #PTravel Settings
 ENV['USER']="Pepazo"
 ENV['PSW']="ILoveQA"
+ENV['tax_percentage'] = "0.08"
+
+raw_image_bytes = MiniMagick::Image.open('dog.jpg').get_pixels.flatten.pack('C*')
+ENV['image_hash'] = Digest::MD5.hexdigest(raw_image_bytes)
 
 Capybara.default_driver = :selenium
 

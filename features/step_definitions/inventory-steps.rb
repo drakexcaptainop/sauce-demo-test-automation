@@ -1,6 +1,6 @@
-Given('I browse to Sauce Demo main page') do
-  visit('https://www.saucedemo.com/')
-end
+require 'uri'
+require 'mini_magick'
+require 'digest'
 
 Given('I am logged in to Sauce Demo as {string}') do |username|
   visit('https://www.saucedemo.com/')
@@ -8,22 +8,6 @@ Given('I am logged in to Sauce Demo as {string}') do |username|
   fill_in('password', with: 'secret_sauce')
   click_button('login-button')
 end
-
-When('I enter {string} as username') do |username|
-  fill_in('user-name', with: username)
-
-end
-
-When('I type {string} as password') do |password|
-  fill_in('password', with: password)
-  click_button('login-button')
-end
-
-Then('I see the Sauce Demo page displayed') do
-  expect(page).to have_content('Products')
-  expect(page).to have_css('.inventory_list')
-end
-
 
 When('I add {string} to the cart') do |productName|
   product_div = find('.inventory_item', text: productName)
@@ -33,7 +17,7 @@ end
 
 When('I add all items to the cart') do
   all("button.btn_inventory").each do |btn|
-    btn.click
+    btn.click if btn.text == "Add to cart"
   end
 end
 
@@ -43,20 +27,12 @@ When('I remove all items from the cart') do
   end
 end
 
-
-
-Then('the cart badge is not visible') do
-  expect(page).not_to have_css('.shopping_cart_badge')
-end
-
-Then('the cart badge stays at {string}') do |count|
-  expect(page).to have_css('.shopping_cart_badge', text: count)
-end
-
-Then('the cart badge shows {string}') do |count|
-  #use find to get badge element
-  badge = find('.shopping_cart_badge')
-  expect(badge).to have_text(count)
+Then('the item number on top of the cart icon should be {string}') do |expected_state|
+  if (expected_state == 'hidden')
+    expect(page).not_to have_css('span.shopping_cart_badge')
+  elsif (expected_state..match(/^\d+$/))
+    expect(find('span.shopping_cart_badge').text).to eq(expected_state)
+  end
 end
 
 
@@ -78,9 +54,7 @@ Then('I see the order success message {string}') do |successMessage|
   expect(page).to have_css('.complete-header', text: successMessage)
 end
 
-Then('I see an error message {string}') do |errorMessage|
-  expect(page).to have_css('.error-message-container.error', text: errorMessage)
-end
+
 
 
 
@@ -116,13 +90,23 @@ end
 Then('the product {string} should display the dog image') do |product_name|
   product = find('.inventory_item', text: product_name)
   img_src = product.find('img.inventory_item_img')[:src]
-  expect(img_src).to include('/static/media/sl-404.168b1cce10384b857a6f.jpg')
+  response =  URI.open(img_src)
+  raw_pixel_bytes = MiniMagick::Image.open(response).get_pixels.flatten.pack('C*')
+  hexhash = Digest::MD5.hexdigest( raw_pixel_bytes )
+  expect(ENV['image_hash']).to eq( hexhash )
 end
 
 Then('all products should display the dog image') do
-  all('img.inventory_item_img').each do |img|
-    expect(img[:src]).to include('/static/media/sl-404.168b1cce10384b857a6f.jpg')
-  end
+  inventory_items_imgs = all('img.inventory_item_img')
+  img_sources =  inventory_items_imgs.map{|img| img[:src]}
+  unique_sources = img_sources.uniq
+  expect(unique_sources.size).to eq(1)
+  
+  main_img_src = unique_sources[0]
+  response =  URI.open(main_img_src)
+  raw_pixel_bytes = MiniMagick::Image.open(response).get_pixels.flatten.pack('C*')
+  hexhash = Digest::MD5.hexdigest( raw_pixel_bytes )
+  expect(ENV['image_hash']).to eq( hexhash )
 end
 
 
@@ -131,13 +115,7 @@ Given('I am in the Products page') do
   expect(page).to have_css('span.title', text: 'Products')
 end
 
-Then('the Your Cart page should display the products {string}') do |products|
-  inventory_items = all('.inventory_item_name').map(&:text)
-  products = products.split(",")
-  products.each do |product|
-    expect(inventory_items).to include(product)
-  end
-end
+
 
 Then('the cart icon in the top right corner shows the number {string}') do |expected_count|
   expect(find('.shopping_cart_badge')).to have_text(expected_count)
@@ -145,12 +123,19 @@ end
 ## extras
 
 
-When('I fill the checkout info with {string}, {string}, {string}') do |first_name, last_name, zip_code|
-  find('#first-name').set(first_name + last_name + zip_code)
+When('I fill the checkout info with:') do |form_data_table|
+  first_name = form_data_table.rows_hash['First Name']
+  last_name = form_data_table.rows_hash['Last Name']
+  zip_code = form_data_table.rows_hash['Zip Code']
+  find('#first-name').set(first_name)
   find('[data-test="lastName"]').set(last_name)
   find("#postal-code").set(zip_code)
 end
 
+
+Given('the user is in the Inventory page') do
+  visit('/inventory.html')
+end
 
 Then('I should still be on the checkout overview page') do
   expect(current_url).to include('checkout-step-two.html')
@@ -197,11 +182,29 @@ end
 
 
 
-Given('I have added the following products to the cart: {string}') do |products_string|
-    products = products_string.split(",")
-    products.each do |product|
-        clean_name = product.strip
-        item_container = find('.inventory_item', text: clean_name)
-        item_container.find('button', text: 'Add to cart').click
-    end
+
+
+
+Then('I should see the product title {string}') do |product_name|
+  page_product_name = find('[data-test="inventory-item-name"]').text
+  expect(page_product_name).to eq(product_name)
+end
+
+Then('I should see the product description {string}') do |description|
+  page_description = find('[data-test="inventory-item-desc"]').text
+  expect(page_description).to eq(description)
+end
+
+Then('I should see the "Add to cart" button') do
+  expect(page).to have_button('Add to cart')
+end
+
+When('I click on the name of the product {string}') do |product_name|
+  find('.inventory_item_name', text: product_name).click
+end
+
+
+Then('I should be on the product details page') do
+  expect(all('.inventory_item_container').count).to eq(1)
+  expect(current_url).to include('inventory-item.html')
 end

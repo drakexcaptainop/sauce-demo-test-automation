@@ -12,11 +12,11 @@ When('I click the login button') do
   @login_page.submit
 end
 
-
-Then('I should be redirected to {string}') do |expected_result|
-  result = @login_page.check_login_status(expected_result)
-  expect(result).to be true
+When('I log out of the application') do
+  find('#react-burger-menu-btn').click
+  find('#logout_sidebar_link').click
 end
+
 
 Given('I am logged in as {string}') do |username|
   @login_page = LoginPage.new
