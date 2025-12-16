@@ -6,7 +6,7 @@ Then('I should see the {string} page') do |page_title|
   expect(page).to have_content(page_title)
   case page_title
   when 'Checkout: Your Information'
-    expect(page).to have_content('Checkout: Your Information')
+    expect(find('.title').text).to eq('Checkout: Your Information')
     form_elements = ['first-name', 'last-name', 'postal-code']
     form_elements.each do |element|
       expect(page).to have_field(element)
@@ -15,7 +15,7 @@ Then('I should see the {string} page') do |page_title|
     expect(page).to have_button('Cancel')
 
   when 'Checkout: Overview'
-    expect(page).to have_content('Checkout: Overview')
+    expect(find('.title').text).to eq('Checkout: Overview')
     expect(page).to have_button('Finish')
     expect(page).to have_button('Cancel')
     expect(page).to have_selector('.cart_item')
@@ -24,8 +24,9 @@ Then('I should see the {string} page') do |page_title|
     expect(page).to have_selector('.summary_tax_label')
     expect(page).to have_selector('.summary_subtotal_label')
   when 'Checkout: Complete!'
-    expect(page).to have_content('Checkout: Complete!')
+    expect(find('.title').text).to eq('Checkout: Complete!')
     expect(page).to have_button('Back Home')
+    expect(find('.complete-header').text).to eq('Thank you for your order!')
   end
 end
 
@@ -103,4 +104,12 @@ end
 
 Then('the empty Last Name field should not give me an error') do 
   expect(1).to eq(1)
+end
+
+
+Then('the "Back Home" button should be visible') do 
+  expect(find('btn.back-to-products').text).to eq('Back Home')
+end
+Then('I should see the "Thank you for your order!" text message') do 
+  expect(find('h2.complete-header').text).to eq('Thank you for your order!')
 end

@@ -22,7 +22,7 @@ end
 
 When('I add all items to the cart') do
   all("button.btn_inventory").each do |btn|
-    btn.click
+    btn.click if btn.text == "Add to cart"
   end
 end
 
@@ -32,17 +32,13 @@ When('I remove all items from the cart') do
   end
 end
 
-
-
-Then('the cart badge is not visible') do
-  expect(page).not_to have_css('.shopping_cart_badge')
+Then('the item number on top of the cart icon should be {string}') do |expected_state|
+  if (expected_state == 'hidden')
+    expect(page).not_to have_css('span.shopping_cart_badge')
+  elsif (expected_state..match(/^\d+$/))
+    expect(find('span.shopping_cart_badge').text).to eq(expected_state)
+  end
 end
-
-Then('the cart badge stays at {string}') do |count|
-  expect(page).to have_css('.shopping_cart_badge', text: count)
-end
-
-
 
 
 When('I go to the shopping cart') do
