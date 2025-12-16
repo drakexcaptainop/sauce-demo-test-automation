@@ -1,4 +1,6 @@
-
+require 'uri'
+require 'mini_magick'
+require 'digest'
 
 Given('I am logged in to Sauce Demo as {string}') do |username|
   visit('https://www.saucedemo.com/')
@@ -6,13 +8,6 @@ Given('I am logged in to Sauce Demo as {string}') do |username|
   fill_in('password', with: 'secret_sauce')
   click_button('login-button')
 end
-
-
-
-
-
-
-
 
 When('I add {string} to the cart') do |productName|
   product_div = find('.inventory_item', text: productName)
@@ -95,13 +90,23 @@ end
 Then('the product {string} should display the dog image') do |product_name|
   product = find('.inventory_item', text: product_name)
   img_src = product.find('img.inventory_item_img')[:src]
-  expect(img_src).to include('/static/media/sl-404.168b1cce10384b857a6f.jpg')
+  response =  URI.open(img_src)
+  raw_pixel_bytes = MiniMagick::Image.open(response).get_pixels.flatten.pack('C*')
+  hexhash = Digest::MD5.hexdigest( raw_pixel_bytes )
+  expect(ENV['image_hash']).to eq( hexhash )
 end
 
 Then('all products should display the dog image') do
-  all('img.inventory_item_img').each do |img|
-    expect(img[:src]).to include('/static/media/sl-404.168b1cce10384b857a6f.jpg')
-  end
+  inventory_items_imgs = all('img.inventory_item_img')
+  img_sources =  inventory_items_imgs.map{|img| img[:src]}
+  unique_sources = img_sources.uniq
+  expect(unique_sources.size).to eq(1)
+  
+  main_img_src = unique_sources[0]
+  response =  URI.open(main_img_src)
+  raw_pixel_bytes = MiniMagick::Image.open(response).get_pixels.flatten.pack('C*')
+  hexhash = Digest::MD5.hexdigest( raw_pixel_bytes )
+  expect(ENV['image_hash']).to eq( hexhash )
 end
 
 
