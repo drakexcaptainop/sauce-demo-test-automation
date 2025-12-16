@@ -14,13 +14,6 @@ Then('the URL should contain {string}') do |path|
 end
 
 
-
-# 2. Failed Login Navigation Guard
-
-
-# 3. Navigation: Inventory to Product Detail and Back
-
-
 When('the user clicks on the title of the first product') do
   first('.inventory_item_name').click
 end
@@ -61,7 +54,6 @@ Then('the menu options {string}, {string}, {string}, {string} should be visible'
   expect(page).to have_content(opt4)
 end
 
-# 6. Sidebar Navigation: "All Items"
 
 
 When('the user opens the sidebar menu') do
@@ -72,37 +64,10 @@ When('the user clicks the {string} link') do |link_text|
   click_link(link_text)
 end
 
-# 7. Full Checkout Flow Navigation
 
-
-# 8. Checkout Cancellation Navigation
-
-
-# 9. Post-Purchase Navigation ("Back Home")
-
-
-# 10. External Link Navigation (Sidebar)
-
-
-Then('the browser should navigate to {string}') do |url|
-  # Handling external navigation can be tricky with Capybara depending on driver
-  # Assuming standard behavior where it follows
-  expect(current_url).to eq(url)
+Then('the browser should navigate to the Sauce Labs page') do
+  expect(current_url).to eq('https://www.saucelabs.com')
 end
-
-# 11. Logout Navigation
-
-
-# 12. Browser Back Button Functionality
-
-
-# 14. Filter State Navigation (View Change)
-
-
-# 15. Closing Sidebar Menu
-
-
-# 16. Page Refresh Persistence
 
 
 When('the user refreshes the browser page') do
@@ -111,10 +76,8 @@ end
 
 
 
-# 17. Unauthenticated Direct URL Access
 
 
-# 1. Navigation Step
 Given('the user navigates to the {string} page') do |page_name|
   # Map the Gherkin string to the specific SauceDemo URL
   path = case page_name
@@ -148,9 +111,12 @@ Then('the user should remain on the {string} page') do |page_name|
 
   # Verify the browser URL contains the expected part
   expect(current_url).to include(expected_part)
-  
-  # Optional: Extra robustness by checking the page title text
-  # This confirms not just the URL, but that the page actually loaded the content
-  # header_text = find('.title').text
-  # expect(header_text).to eq(page_name.upcase) # SauceDemo titles are usually uppercase
+end
+
+
+Given('I have opened the details for {string}') do |string|
+  expect(find('[data-test="inventory-item-name"]').text).to eq(string)
+  div = find('.inventory_details_desc_container') 
+  expect( div ).to have_selector(:button)
+  expect(find('[data-test="back-to-products"]').text).to eq('Back to products')
 end

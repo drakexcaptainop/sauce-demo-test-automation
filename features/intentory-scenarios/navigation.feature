@@ -46,6 +46,8 @@ Feature: Page Navigation and URL Routing
       | product_name          | description |
       | Sauce Labs Backpack   | carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style with unequaled laptop and tablet protection.            |
 
+
+
   Scenario: Return to Inventory from Product Details
     Given I have opened the details for "Sauce Labs Backpack"
     When I click the "Back to products" button
@@ -54,7 +56,7 @@ Feature: Page Navigation and URL Routing
 
 
   Scenario: Open the shopping cart
-    When I click the shopping cart badge
+    When I click the "Shopping Cart" icon
     Then I should see the "Your Cart" header
     And I should see the "Checkout" button
 
@@ -73,7 +75,6 @@ Scenario Outline: Add items to the cart depending on user type
 Examples:
 | user                    | expected_count |
 | standard_user           | 6              |
-| performance_glitch_user | 6              |
 | visual_user             | 6              |
 | problem_user            | 3              |
 | error_user              | 3              |

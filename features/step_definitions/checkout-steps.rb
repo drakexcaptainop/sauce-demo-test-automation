@@ -106,10 +106,21 @@ Then('the empty Last Name field should not give me an error') do
   expect(1).to eq(1)
 end
 
+When('I click Finish') do 
+  find('#finish').click
+end
 
 Then('the "Back Home" button should be visible') do 
-  expect(find('btn.back-to-products').text).to eq('Back Home')
+  expect(find('[data-test="back-to-products"]').text).to eq('Back Home')
 end
-Then('I should see the "Thank you for your order!" text message') do 
+Then('the "Thank you for your order!" text message should be visible') do 
   expect(find('h2.complete-header').text).to eq('Thank you for your order!')
+end
+
+Then('the Your Cart page should display the products:') do |table|
+    current_inventory_items = all('.inventory_item_name').map(&:text)
+    table.hashes.each do |product|
+      product_name = product['Product Name']
+      expect(current_inventory_items.include?(product_name)).to be(true)
+    end
 end

@@ -12,7 +12,10 @@ When('I click the login button') do
   @login_page.submit
 end
 
-
+When('I log out of the application') do
+  find('#react-burger-menu-btn').click
+  find('#logout_sidebar_link').click
+end
 
 
 Given('I am logged in as {string}') do |username|
