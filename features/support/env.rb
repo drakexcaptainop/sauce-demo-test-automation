@@ -12,8 +12,12 @@ ENV['USER']="Pepazo"
 ENV['PSW']="ILoveQA"
 ENV['tax_percentage'] = "0.08"
 
-raw_image_bytes = MiniMagick::Image.open('dog.jpg').get_pixels.flatten.pack('C*')
-ENV['image_hash'] = Digest::MD5.hexdigest(raw_image_bytes)
+
+if(!Gem.win_platform?)
+  raw_image_bytes = MiniMagick::Image.open('dog.jpg').get_pixels.flatten.pack('C*')
+  ENV['image_hash'] = Digest::MD5.hexdigest(raw_image_bytes)
+end
+
 
 Capybara.default_driver = :selenium
 
