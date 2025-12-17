@@ -1,24 +1,39 @@
-class ProductDetailsPage
+require_relative 'inventory-page'
+require_relative 'page_utils/singleton'
+
+class ProductDetailsPage < SingletonPageParent
   include Capybara::DSL
 
-  BACK_TO_PRODUCTS_BTN = '#back-to-products'
-  PRODUCT_NAME = '[data-test="inventory-item-name"]'
-  PRODUCT_DESC = '[data-test="inventory-item-desc"]'
-  ADD_TO_CART_BTN = 'button.btn_inventory'
+  URL = '/inventory-item.html'
 
-  def click_back_to_products
-    find(BACK_TO_PRODUCTS_BTN).click
+  ID_BACK_TO_PRODUCTS_BTN = '#back-to-products'
+
+  DATA_TEST_INVENTORY_ITEM_NAME = '[data-test="inventory-item-name"]'
+  DATA_TEST_INVETORY_ITEM_DESCRIPTION = '[data-test="inventory-item-desc"]'
+  DATA_TEST_INVENTORY_ITEM_PRICE = '[data-test="inventory-item-price"]'
+  DATA_TEST_ADD_TO_CART_BTN = '[data-test="add-to-cart"]'
+
+
+  def visit_page(product_name)
+    InventoryPage.instance.click_product_name(product_name)
   end
 
-  def get_product_name
-    find(PRODUCT_NAME).text
+  def click_add_to_cart
+    find(DATA_TEST_ADD_TO_CART_BTN).click
   end
 
+
+  def click_back_to_products_btn
+    find(ID_BACK_TO_PRODUCTS_BTN).click
+  end
+
+  def get_product_name 
+    find(DATA_TEST_INVENTORY_ITEM_NAME).text
+  end
   def get_product_description
-    find(PRODUCT_DESC).text
+    find(DATA_TEST_INVETORY_ITEM_DESCRIPTION).text
   end
-
-  def add_to_cart
-    click_button('Add to cart')
+  def get_product_price
+    find(DATA_TEST_INVENTORY_ITEM_PRICE)
   end
 end

@@ -1,6 +1,9 @@
 
 $login_page = LoginPage.instance
 $inventory_page = InventoryPage.instance
+$product_details_page = ProductDetailsPage.instance
+
+
 
 
 Given('I am logged in to Sauce Demo as {string}') do |username|
@@ -107,73 +110,50 @@ When('I fill the checkout info with:') do |form_data_table|
   first_name = form_data_table.rows_hash['First Name']
   last_name = form_data_table.rows_hash['Last Name']
   zip_code = form_data_table.rows_hash['Zip Code']
-  find('#first-name').set(first_name)
-  find('[data-test="lastName"]').set(last_name)
-  find("#postal-code").set(zip_code)
+  $checkout_your_info_page.fill_in_form(first_name, last_name, zip_code)
 end
 
 
 Given('the user is in the Inventory page') do
-  visit('/inventory.html')
+  $inventory_page.visit_page
+  expect($inventory_page.get_title_text).to eq('Products')
+  expect(page).to have_selector(InventoryPage::ID_INVENTORY_CONTAINER)
+  expect($inventory_page.get_product_count).to be > 0
 end
 
 Then('I should still be on the checkout overview page') do
-  expect(current_url).to include('checkout-step-two.html')
+  expect(current_url).to include(CheckoutOverviewPage::URL)
   expect(page).to have_content('Checkout: Overview')
-end
-
-Then('the "Item total" field should show {string}') do |expected_val|
-  price_elements = all('.inventory_item_price')
-  
-  @calculated_sum = price_elements.map { |el| el.text.delete('$').to_f }.sum
-  
-  expect(@calculated_sum).to eq(expected_val.to_f)
-
-  expect(find('.summary_subtotal_label').text).to include(expected_val)
-end
-
-Then('the "Tax" field should show {string}') do |expected_tax|
-  calculated_tax = (@calculated_sum * 0.08).round(2)
-  
-  expect(calculated_tax).to eq(expected_tax.to_f)
-
-  expect(find('.summary_tax_label').text).to include(expected_tax)
-end
-
-Then('the "Total" field should show {string}') do |expected_total|
-  calculated_total = (@calculated_sum + (@calculated_sum * 0.08).round(2)).round(2)
-  
-  expect(calculated_total).to eq(expected_total.to_f)
-
-  expect(find('.summary_total_label').text).to include(expected_total)
+  expect(page).to have_button('Finish')
+  expect(page).to have_button('Cancel')
+  expect(page).to have_selector(CheckoutOverviewPage::CLASS_INVENTORY_ITEM)
+  expect(page).to have_selector(CheckoutOverviewPage::CLASS_SUBTOTAL)
+  expect(page).to have_selector(CheckoutOverviewPage::CLASS_TAX)
+  expect(page).to have_selector(CheckoutOverviewPage::CLASS_TOTAL)
 end
 
 
-
-
-When('I add the following products to the cart: {string}') do |product_list|
-  products = product_list.split(',')
-  products.each do |product_name|
-    clean_name = product_name.strip
-    item_container = find('.inventory_item', text: clean_name)
-    item_container.find('button', text: 'Add to cart').click
-  end
-end
 
 
 
 Then('I should see the product title {string}') do |product_name|
-  page_product_name = find('[data-test="inventory-item-name"]').text
+  page_product_name = $product_details_page.get_product_name
   expect(page_product_name).to eq(product_name)
 end
 
 Then('I should see the product description {string}') do |description|
-  page_description = find('[data-test="inventory-item-desc"]').text
+  page_description = $product_details_page.get_product_description
   expect(page_description).to eq(description)
 end
 
+Given('the user is logged in to Sauce Demo as {string}') do |username|
+  $login_page.visit_page
+  $login_page.fill_credentials(username, 'secret_sauce')
+  $login_page.submit
+end
+
 Then('I should see the "Add to cart" button') do
-  expect(page).to have_button('Add to cart')
+  expect(page).to have_selector(ProductDetailsPage::DATA_TEST_ADD_TO_CART_BTN)
 end
 
 When('I click on the name of the product {string}') do |product_name|
@@ -182,6 +162,9 @@ end
 
 
 Then('I should be on the product details page') do
-  expect(all('.inventory_item_container').count).to eq(1)
-  expect(current_url).to include('inventory-item.html')
+  expect(page).to have_selector(ProductDetailsPage::DATA_TEST_ADD_TO_CART_BTN)
+  expect(page).to have_selector(ProductDetailsPage::DATA_TEST_INVENTORY_ITEM_NAME)
+  expect(page).to have_selector(ProductDetailsPage::DATA_TEST_INVENTORY_ITEM_PRICE)
+  expect(page).to have_selector(ProductDetailsPage::DATA_TEST_INVETORY_ITEM_DESCRIPTION)
+  expect(page).to have_selector(ProductDetailsPage::ID_BACK_TO_PRODUCTS_BTN)
 end

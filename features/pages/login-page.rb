@@ -1,6 +1,6 @@
 require_relative 'page_utils/singleton'
 
-class LoginPage < SingletonParent
+class LoginPage < SingletonPageParent
   include Capybara::DSL
 
   URL           = '/'
@@ -18,9 +18,6 @@ class LoginPage < SingletonParent
     find(ERROR_BOX).text
   end
 
-  def visit_page
-    visit URL
-  end
 
   def get_user_field_value
     find(USER_FIELD).value
@@ -51,5 +48,12 @@ class LoginPage < SingletonParent
 
   def get_error_message
     find(ERROR_BOX).text
+  end
+
+  def visit_page
+    visit URL 
+  end
+  def get_title_text 
+    find(CLASS_TITLE).text
   end
 end

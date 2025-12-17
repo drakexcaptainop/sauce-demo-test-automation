@@ -1,6 +1,6 @@
 require_relative 'page_utils/singleton'
 
-class InventoryPage < SingletonParent
+class InventoryPage < SingletonPageParent
   include Capybara::DSL
 
   URL = '/inventory.html'
@@ -12,17 +12,17 @@ class InventoryPage < SingletonParent
   CLASS_SHOPPING_CART_LINK = '.shopping_cart_link'
   CLASS_INVENTORY_ITEM_IMG = 'img.inventory_item_img'
   CLASS_TITLE = 'span.title'
+  CLASS_SIDE_MENU = '.bm-menu-wrap'
+  CLASS_SIDE_BAR_MENU_ITEM = '.bm-item.menu-item'
 
+  ID_SIDE_BAR_LINK = '#inventory_sidebar_link'
+  ID_INVENTORY_CONTAINER = '#inventory_container'
   ID_BURGER_MENU_BTN = '#react-burger-menu-btn'
   ID_LOGOUT_SIDEBAR_LINK = '#logout_sidebar_link'
 
+
   REMOVE_BTN = 'Remove'
   ADD_TO_CART_BTN = 'Add to cart'
-
-
-  def visit_page
-    visit URL
-  end
 
   def click_product_name(product_name)
     get_product_by_text(product_name).find(CLASS_INVENTORY_ITEM_NAME).click
@@ -102,4 +102,10 @@ class InventoryPage < SingletonParent
     find(CLASS_TITLE).text
   end 
     
+  def visit_page
+    visit URL 
+  end
+  def get_title_text 
+    find(CLASS_TITLE).text
+  end
 end
