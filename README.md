@@ -16,7 +16,7 @@ This project is a Cucumber smoke test suite in Ruby for the [saucedemo.com](http
 
 ### Windows
 
-Doesnt WORK
+Skip some test for windwos due to installation problems
 ---
 
 ### macOS
