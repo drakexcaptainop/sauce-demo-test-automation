@@ -1,15 +1,15 @@
+$login_page = LoginPage.instance
 
 Given('I am on the login page') do
-  @login_page = LoginPage.new 
-  @login_page.visit_page
+  $login_page.visit_page
 end
 
 When('I input username {string} and password {string}') do |user, pass|
-  @login_page.fill_credentials(user, pass)
+  $login_page.fill_credentials(user, pass)
 end
 
 When('I click the login button') do
-  @login_page.submit
+  $login_page.submit
 end
 
 When('I log out of the application') do
@@ -19,30 +19,28 @@ end
 
 
 Given('I am logged in as {string}') do |username|
-  @login_page = LoginPage.new
-  @login_page.visit_page
-  @login_page.fill_credentials(username, 'secret_sauce')
-  @login_page.submit
+  $login_page.visit_page
+  $login_page.fill_credentials(username, 'secret_sauce')
+  $login_page.submit
 end
 
 Then('the Login button should be visible') do
-  expect(page).to have_selector('#login-button')
+  expect(page).to have_selector(LoginPage::LOGIN_BUTTON_ID)
 end
 
 Then('the Username and Password fields should be empty') do
-  expect(find('#user-name').value).to be_empty
-  expect(find('#password').value).to be_empty
+  expect($login_page.get_user_field_value).to be_empty
+  expect($login_page.get_pass_field_value).to be_empty
 end
 
 Then('I should see the error message {string}') do |expected_message|
-  expect(@login_page.get_error_message).to include(expected_message)
+  expect($login_page.get_error_message).to include(expected_message)
 end
 
 
 When('I log in again as {string}') do |username|
-  @login_page = LoginPage.new
-  @login_page.fill_credentials(username, 'secret_sauce')
-  @login_page.submit
+  $login_page.fill_credentials(username, 'secret_sauce')
+  $login_page.submit
 end
 
 Given('I am not logged in') do
@@ -57,21 +55,19 @@ end
 
 Then('I should be redirected to the Login Page') do
   expect(current_url).to eq('https://www.saucedemo.com/') 
-  expect(page).to have_selector('#login-button')
-  expect(page).to have_selector('#user-name')
-  expect(page).to have_selector('#password')
+  expect(page).to have_selector(LoginPage::LOGIN_BUTTON_ID)
+  expect(page).to have_selector(LoginPage::USER_FIELD)
+  expect(page).to have_selector(LoginPage::PASS_FIELD)
 end
 
 Then('I should see the error: Epic sadface: You can only access \/{string} when you are logged in.') do |url_extension|
-  error_container = find('[data-test="error"]')
-  expect(error_container.text).to eq("Epic sadface: You can only access '/#{url_extension}' when you are logged in.")
+  expect($login_page.get_error_container_text).to eq("Epic sadface: You can only access '/#{url_extension}' when you are logged in.")
 end
 
 Given('the user Navigates to the Login Page of Sauce Demo') do
   visit '/'
 end
 Given('the user logs in as {string}') do |username|
-  @login_page = LoginPage.new
-  @login_page.fill_credentials(username, 'secret_sauce')
-  @login_page.submit
+  $login_page.fill_credentials(username, 'secret_sauce')
+  $login_page.submit
 end

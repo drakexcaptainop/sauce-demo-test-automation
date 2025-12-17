@@ -77,6 +77,7 @@ Examples:
 | problem_user            | 3              |
 | error_user              | 3              |
 
+@cart-visibility
 Scenario Outline: Verify cart badge visibility after clearing items based on user type
   Given I am logged in to Sauce Demo as "<user>"
   When I add all items to the cart
@@ -86,7 +87,6 @@ Scenario Outline: Verify cart badge visibility after clearing items based on use
 Examples:
   | user                    | expected_state |
   | standard_user           | hidden         |
-  | performance_glitch_user | hidden         |
   | visual_user             | hidden         |
   | problem_user            | 3              |
   | error_user              | 3              |

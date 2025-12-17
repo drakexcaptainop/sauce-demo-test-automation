@@ -1,4 +1,6 @@
-class LoginPage
+require_relative 'page_utils/singleton'
+
+class LoginPage < SingletonParent
   include Capybara::DSL
 
   URL           = '/'
@@ -8,9 +10,24 @@ class LoginPage
   ERROR_BOX     = '[data-test="error"]'
   INVENTORY_URL = '/inventory.html'
   INVENTORY_ITEM_URL = '/inventory-item.html?id=0'
+  LOGIN_BUTTON_ID = '#login-button'
+
+  attr_accessor( 'user' )
+
+  def get_error_container_text
+    find(ERROR_BOX).text
+  end
 
   def visit_page
     visit URL
+  end
+
+  def get_user_field_value
+    find(USER_FIELD).value
+  end
+
+  def get_pass_field_value
+    find(PASS_FIELD).value
   end
 
   def fill_credentials(user, pass)
