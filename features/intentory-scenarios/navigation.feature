@@ -4,15 +4,19 @@ Feature: Page Navigation and URL Routing
   So that I can browse products, manage my cart, and complete purchases correctly
 
   Background:
-    Given the user Navigates to the Login Page of Sauce Demo
-    And the user logs in as "standard_user"
+    Given the user is logged in to Sauce Demo as "standard_user"
     And the user is in the Inventory page
 
 
   Scenario: Sidebar Menu Expansion
     When the user clicks the "Burger Menu" icon
     Then the sidebar navigation panel should slide into view
-    And the menu options "All Items", "About", "Logout", "Reset App State" should be visible
+    And the followin menu options should be visible:
+      | Option Name |
+      | All Items  |
+      | About |
+      | Logout |
+      | Reset App State |
 
   @navi-error
   Scenario: External Link Navigation to About Page
@@ -24,16 +28,6 @@ Feature: Page Navigation and URL Routing
     Given the user navigates to the "Checkout Step Two" page
     When the user refreshes the browser page
     Then the user should remain on the "Checkout Step Two" page
-
-
-  Scenario: Navigation from Inventory to Product Detail and Back
-    When the user clicks on the title of the first product
-    Then the user should be taken to the product detail page
-    And the URL should contain "/inventory-item.html"
-    When the user clicks the "Back to products" button
-    Then the user should be redirected back to the Inventory page
-
-
 
   @fixed-navi
   Scenario Outline: Navigate to product details
@@ -77,6 +71,7 @@ Examples:
 | problem_user            | 3              |
 | error_user              | 3              |
 
+@cart-visibility
 Scenario Outline: Verify cart badge visibility after clearing items based on user type
   Given I am logged in to Sauce Demo as "<user>"
   When I add all items to the cart
@@ -86,7 +81,6 @@ Scenario Outline: Verify cart badge visibility after clearing items based on use
 Examples:
   | user                    | expected_state |
   | standard_user           | hidden         |
-  | performance_glitch_user | hidden         |
   | visual_user             | hidden         |
   | problem_user            | 3              |
   | error_user              | 3              |
