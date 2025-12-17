@@ -18,15 +18,11 @@ end
 
 
 When('I add all items to the cart') do
-  all("button.btn_inventory").each do |btn|
-    btn.click if btn.text == "Add to cart"
-  end
+  $inventory_page.add_all_products_to_cart
 end
 
 When('I remove all items from the cart') do
-  all("button.btn_inventory").each do |btn|
-    btn.click if btn.text == "Remove"
-  end
+  $inventory_page.remove_all_products_from_cart
 end
 
 Then('the item number on top of the cart icon should be {string}') do |expected_state|

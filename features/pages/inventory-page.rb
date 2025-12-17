@@ -37,11 +37,15 @@ class InventoryPage < SingletonPageParent
   end
 
   def add_all_products_to_cart
-    $inventory_page.add_all_products_to_carta
+    all("button.btn_inventory").each do |btn|
+      btn.click if btn.text == ADD_TO_CART_BTN
+    end
   end
 
   def remove_all_products_from_cart
-    $inventory_page.remove_all_products_from_cart
+    all("button.btn_inventory").each do |btn|
+      btn.click if btn.text == REMOVE_BTN
+    end
   end
 
   def get_shopping_cart_badge_count_as_str

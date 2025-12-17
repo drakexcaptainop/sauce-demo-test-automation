@@ -1,5 +1,5 @@
 Feature: Complete Inventory Flow with standard_user and performance_glitch_user
-  Scenario Outline: End-to-end checkout total calculation validation for standard_user and performance_glitch_user with different product sets
+  Scenario Outline: End-to-end checkout flow for standard_user and performance_glitch_user
     Given I am logged in to Sauce Demo as "<user>"
     And I am in the Products page
     And I have added the following products to the cart:
