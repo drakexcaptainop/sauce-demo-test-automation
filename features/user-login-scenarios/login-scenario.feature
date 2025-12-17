@@ -13,7 +13,7 @@ Scenario: User does login in sauce demo using Standard User
       | Sauce Labs Onesie                 | $7.99  |
       | Test.allTheThings() T-Shirt (Red) | $15.99 |
 
-@problem
+  @dog-test
   Scenario: User does login with the problem_user account
     When I input username "problem_user" and password "secret_sauce"
     And I click the login button
@@ -36,7 +36,7 @@ Scenario: User does login in sauce demo using Standard User
     And I click the login button
     Then I should see the error message "Epic sadface: Username and password do not match any user in this service"
 
-  @visual
+  @dog-test
   Scenario: Visual User Login
     When I input username "visual_user" and password "secret_sauce"
     And I click the login button
