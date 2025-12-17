@@ -40,8 +40,8 @@ Feature: Page Navigation and URL Routing
     Examples:
       | product_name          | description |
       | Sauce Labs Backpack   | carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style with unequaled laptop and tablet protection.            |
-
-
+      | Sauce Labs Fleece Jacket   | It's not every day that you come across a midweight quarter-zip fleece jacket capable of handling everything from a relaxing day outdoors to a busy day at the office.       |
+  
   @navi-error
   Scenario: Return to Inventory from Product Details
     Given I have opened the details for "Sauce Labs Backpack"

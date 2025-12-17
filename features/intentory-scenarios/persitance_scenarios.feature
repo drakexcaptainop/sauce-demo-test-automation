@@ -19,3 +19,4 @@ Feature: Cart Retention
       | standard_user |
       | performance_glitch_user |
       | visual_user |
+      
