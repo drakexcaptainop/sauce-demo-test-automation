@@ -16,19 +16,7 @@ This project is a Cucumber smoke test suite in Ruby for the [saucedemo.com](http
 
 ### Windows
 
-1. Download **ImageMagick** from [https://imagemagick.org/downloads.php](https://imagemagick.org/script/download.php)
-   or download latest-version directly using [https://imagemagick.org/archive/binaries/ImageMagick-7.1.2-11-Q16-HDRI-x64-dll.exe)](https://imagemagick.org/archive/binaries/ImageMagick-7.1.2-11-Q16-HDRI-x64-dll.exe)
-3. During installation:
-
-   * Check **"Install legacy utilities (convert)"**
-   * Check **"Add application directory to your system PATH"**
-4. Restart **Command Prompt** or **PowerShell**
-5. Verify installation:
-
-```powershell
-magick -version
-```
-
+Doesnt WORK
 ---
 
 ### macOS
